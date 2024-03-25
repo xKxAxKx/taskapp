@@ -8,6 +8,19 @@ Monorepo of simple task management application
 
 ## Setup
 
+### Create Secrets
+create secrets file
+```shell
+$ mkdir secrets
+$ touch secrets/mysql_root_password
+$ touch secrets/mysql_user_password
+```
+
+generate passwords
+```shell
+$ make make-mysql-passwords
+```
+
 ### Setup asdf
 
 Please read the setup guide of asdf. (https://asdf-vm.com/guide/getting-started.html)
