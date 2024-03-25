@@ -2,17 +2,17 @@ version: '3.9'
 services:
 
   mysql:
-    build:
+    build: # イメージビルドのコンテキストディレクトリを設定
       context: ./containers/mysql
-    environment:
+    environment: # 環境変数の設定
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
       MYSQL_DATABASE: taskapp
       MYSQL_USER: taskapp_user
       MYSQL_PASSWORD_FILE: /run/secrets/mysql_user_password
-    secrets:
+    secrets: # コンテナにシークレットファイルをマウント
       - mysql_root_password
       - mysql_user_password
-    volumes:
+    volumes: # MySQLのデータをDataVolumeにマウント
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
@@ -115,7 +115,7 @@ services:
     volumes:
       - assets_data:/var/www/assets
 
-secrets:
+secrets: # 各パスワードファイルをシークレットとして設定
   mysql_root_password:
     file: ./secrets/mysql_root_password
   mysql_user_password:
@@ -123,6 +123,6 @@ secrets:
   api_config:
     file: ./api-config.yaml
 
-volumes:
+volumes: # DataVolumeの作成
   mysql_data:
   assets_data:
