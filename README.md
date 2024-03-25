@@ -48,3 +48,18 @@ $ migrate -path [マイグレーションSQLディレクトリ] -database [デ�
 # チェックポイント以降のup.sqlを1つだけ実行する
 $ migrate -path [マイグレーションSQLディレクトリ] -database [データベース接続文字列] down 1
 ```
+
+Check CheckPoint
+```
+mysql> SELECT * FROM schema_migrations;
++---------+-------+
+| version | dirty |
++---------+-------+
+|    1003 |     0 |
++---------+-------+
+```
+
+## Connect to MySQL
+```shell
+$ docker compose exec mysql mysql -u taskapp_user -p taskapp
+```
