@@ -22,6 +22,7 @@ fi
 
 command=$6
 
+#  マイグレーション対象のMySQLへのヘルスチェックを毎秒行う
 echo "Waiting for MySQL to start..."
 until mysql -h $db_host -P $db_port -u $db_username -p$db_password -e "show databases;" &> /dev/null; do
   >&2 echo "MySQL is unavailable - sleeping"
@@ -29,4 +30,5 @@ until mysql -h $db_host -P $db_port -u $db_username -p$db_password -e "show data
 done
 echo "MySQL is up - executing command"
 
+# golang-migrateの実行
 migrate -path ./history -database mysql://$db_username:$db_password@tcp\($db_host:$db_port\)/$db_name $command

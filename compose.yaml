@@ -20,18 +20,19 @@ services:
   migrator:
     build:
       context: ./containers/migrator
-    depends_on:
+    depends_on: # mysqlコンテナへの依存を設定
       - mysql
     environment:
       DB_HOST: mysql
       DB_NAME: taskapp
       DB_PORT: "3306"
       DB_USERNAME: taskapp_user
+    # パスワードをシェル変数に展開し、スクリプトを実行している
     command: >
         sh -c '
             bash /migrator/migrate.sh $$DB_HOST $$DB_PORT $$DB_NAME $$DB_USERNAME /run/secrets/mysql_user_password up
         '
-    secrets:
+    secrets: # こちらにもシークレットファイルをマウント
       - mysql_user_password
 
   api:
