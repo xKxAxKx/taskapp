@@ -32,3 +32,19 @@ Please read the setup guide of asdf. (https://asdf-vm.com/guide/getting-started.
 ```shell
 $ sh hack/install-tools.sh
 ```
+
+## Migrate
+Using golang migrate
+```shell
+# チェックポイント以降のすべてのup.sqlを実行する
+$ migrate -path [マイグレーションSQLディレクトリ] -database [データベース接続文字列] up
+
+# チェックポイント以降のup.sqlを1つだけ実行する
+$ migrate -path [マイグレーションSQLディレクトリ] -database [データベース接続文字列] up 1
+
+# チェックポイント以前のすべてのdown.sqlを実行する(初期化)
+$ migrate -path [マイグレーションSQLディレクトリ] -database [データベース接続文字列] down
+
+# チェックポイント以降のup.sqlを1つだけ実行する
+$ migrate -path [マイグレーションSQLディレクトリ] -database [データベース接続文字列] down 1
+```
