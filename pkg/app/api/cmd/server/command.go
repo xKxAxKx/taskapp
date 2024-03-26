@@ -24,7 +24,9 @@ type command struct {
 	configFile  string
 }
 
+// 　CLIライブラリcobraのインスタンスを作成
 func NewCommand() *cobra.Command {
+	//　CLIのオプションとして取る値のデフォルト値を設定
 	c := &command{
 		port:        8180,
 		gracePeriod: 5 * time.Second,
@@ -34,10 +36,13 @@ func NewCommand() *cobra.Command {
 		Short: "Start up the api server",
 		RunE:  cli.WithContext(c.execute),
 	}
+	//　APIサーバをListenするポート番号を定義
 	cmd.Flags().IntVar(&c.port, "port", c.port, "The port number used to run HTTP api.")
+	// graceful shutdownまでの待ち時間を定義
 	cmd.Flags().DurationVar(&c.gracePeriod, "grace-period", c.gracePeriod, "How long to wait for graceful shutdown.")
+	// APIサーバの設定ファイルのパスを定義
 	cmd.Flags().StringVar(&c.configFile, "config-file", c.configFile, "The path to the config file.")
-
+	// --config-fileオプションの指定を必須に設定
 	cmd.MarkFlagRequired("config-file")
 	return cmd
 }
@@ -45,6 +50,7 @@ func NewCommand() *cobra.Command {
 func (c *command) execute(ctx context.Context) error {
 	group, ctx := errgroup.WithContext(ctx)
 
+	// --config-fileで指定された設定ファイルの読み込み
 	appConfig, err := config.LoadConfigFile(c.configFile)
 	if err != nil {
 		slog.Error("failed to load api configuration",
@@ -70,6 +76,7 @@ func (c *command) execute(ctx context.Context) error {
 		server.WithGracePeriod(c.gracePeriod),
 	}
 	httpServer := server.NewHTTPServer(c.port, options...)
+
 	httpServer.Get("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})

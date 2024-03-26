@@ -63,3 +63,11 @@ mysql> SELECT * FROM schema_migrations;
 ```shell
 $ docker compose exec mysql mysql -u taskapp_user -p taskapp
 ```
+
+## App
+### build
+```shell
+$ make vendor
+$ make build-api
+$ make build-web
+```

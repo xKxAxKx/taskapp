@@ -9,11 +9,15 @@ import (
 )
 
 func main() {
+	// コマンドラインアプリケーションのインスタンスを作成
 	c := cli.NewCLI("taskapp-api", "The API application of taskapp")
+	//　サブコマンドの定義
 	c.AddCommands(
+		//　APIサーバの起動コマンド
 		server.NewCommand(),
 		config.NewCommand(),
 	)
+	// コマンドラインアプリケーションを実行
 	if err := c.Execute(); err != nil {
 		log.Fatal(err)
 	}
